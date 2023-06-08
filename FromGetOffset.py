@@ -25,7 +25,8 @@ class OSNotSupported(BaseException):
     def __init__(self):
         super(OSNotSupported, self).__init__(
             "Your OS is not Windows, Linux nor MacOS. "
-            "Please consider opening an issue on GitHub."
+            "Please consider opening an issue on GitHub.\n"
+            "For now, the offset/address has been printed to the console."
         )
 
 
@@ -33,9 +34,9 @@ class OSNotSupported(BaseException):
 split_bits = lambda x: ((x >> 8) & 0xff, x & 0xff)
 
 
-def get_offset(offset):
-    """Gets the offset of 'offset'"""
-    return hex(offset - int(currentProgram.getImageBase().getOffset()))
+def get_offset(address):
+    """Gets the offset of 'address'"""
+    return hex(address - int(currentProgram.getImageBase().getOffset()))
 
 
 def from_offset(offset):
@@ -70,6 +71,7 @@ def copy_to_clip(text):
     if _darwin_copy(text) == 0:
         return 
 
+    print text
     raise OSNotSupported()
 
 
