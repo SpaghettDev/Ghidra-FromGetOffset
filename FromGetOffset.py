@@ -77,18 +77,16 @@ def copy_to_clip(text):
 
 try:
     choice = askChoice("Get/From Offset", "Please choose one", [ "Get Offset", "From Offset" ], "Get Offset")
-    choice2 = askChoice("Get/From Offset", "Please choose one", [ "Current Address", "Custom Address" ], "Current Address")
 
     if choice == "Get Offset":
+        choice2 = askChoice("Get/From Offset", "Please choose one", [ "Current Address", "Custom Address" ], "Current Address")
         addr = hex(int(currentLocation.getAddress().getOffset()))
         if choice2 == "Custom Address":
             addr = askString("Get Offset", "Enter the address: ")
         popup("Offset: {}".format(get_offset(int(addr, 0))))
         copy_to_clip(get_offset(int(addr, 0)))
     else:
-        offset = "0x"
-        if choice2 == "Custom Address":
-            offset = askString("From Offset", "Enter the offset: ", "0x")
+        offset = askString("From Offset", "Enter the offset: ", "0x")
         popup("Address: {}".format(from_offset(int(offset, 0))))
         copy_to_clip(from_offset(int(offset, 0)))
 except ghidra.util.exception.CancelledException:
