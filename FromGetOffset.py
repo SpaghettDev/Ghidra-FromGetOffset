@@ -36,12 +36,12 @@ split_bits = lambda x: ((x >> 8) & 0xff, x & 0xff)
 
 def get_offset(address):
     """Gets the offset of 'address'"""
-    return hex(address - int(currentProgram.getImageBase().getOffset()))
+    return hex(address - int(currentProgram.getImageBase().getOffset())).replace("L", "")
 
 
 def from_offset(offset):
     """Gets the address of 'offset'"""
-    return hex(offset + int(currentProgram.getImageBase().getOffset()))
+    return hex(offset + int(currentProgram.getImageBase().getOffset())).replace("L", "")
 
 
 def copy_to_clip(text):
@@ -50,7 +50,7 @@ def copy_to_clip(text):
     for sure what OS is running the script"""
     def _windows_copy(text):
         # clip.exe instead of clip because WSL
-        return system("echo {} | clip.exe".format(text))
+        return system("echo | set /p nul={}| clip.exe".format(text.strip()))
 
     def _linux_copy(text):
         p = Popen(["xsel", "-pi"], stdin=PIPE)
@@ -80,7 +80,7 @@ try:
 
     if choice == "Get Offset":
         choice2 = askChoice("Get/From Offset", "Please choose one", [ "Current Address", "Custom Address" ], "Current Address")
-        addr = hex(int(currentLocation.getAddress().getOffset()))
+        addr = hex(int(currentLocation.getAddress().getOffset())).replace("L", "")
         if choice2 == "Custom Address":
             addr = askString("Get Offset", "Enter the address: ")
         popup("Offset: {}".format(get_offset(int(addr, 0))))
